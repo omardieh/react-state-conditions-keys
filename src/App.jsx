@@ -1,34 +1,30 @@
+import { Fragment } from "react/jsx-runtime";
 import "./App.css";
+import data from "./assets/data.json";
 import { useState } from "react";
 
+function ProductsList({ products, setProducts }) {
+  const handleClick = (product) => {
+    setProducts(products.filter((p) => p.id !== product.id));
+  };
+  return (
+    <div className="products__list">
+      {products.map((product) => (
+        <Fragment key={product.id}>
+          <p> {product.title} </p>
+          <button onClick={() => handleClick(product)}> remove </button>
+        </Fragment>
+      ))}
+    </div>
+  );
+}
+
 export default function App() {
-  const [count, setCount] = useState(0);
-  const [theme, setTheme] = useState("light");
-  const increment = () => {
-    setCount(count + 1);
-  };
-  const decrement = () => {
-    setCount(count - 1);
-  };
-
-  const toggleTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
-  };
-
-  setTheme(theme === "dark" ? "light" : "dark");
+  const [products, setProducts] = useState(data);
 
   return (
-    <div className={"App " + theme}>
-      <button onClick={increment}> increment </button>
-      <span> {count} </span>
-      <button onClick={decrement}> decrement </button>
-      <select onChange={toggleTheme}>
-        <option value="light"> Light </option>
-        <option value="dark"> Dark </option>
-      </select>
-      <button onClick={toggleTheme}>
-        switch to {theme === "dark" ? "light" : "dark"}
-      </button>
-    </div>
+    <ul className="App">
+      <ProductsList products={products} setProducts={setProducts} />
+    </ul>
   );
 }
